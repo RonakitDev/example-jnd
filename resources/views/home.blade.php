@@ -17,7 +17,7 @@
                         {{ __('You are logged in!') }}
 
                         <br>
-                        <a href="{{ route('shotlink') }}">Go Shotlink</a>
+                        <a href="{{ url('shotlink') }}">Go Shotlink</a>
                     </div>
                 </div>
             </div>

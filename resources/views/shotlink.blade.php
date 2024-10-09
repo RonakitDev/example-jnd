@@ -71,26 +71,19 @@
                 }
                 const inputData = inputField.val();
                 $.ajax({
-                    url: "{{ route('data.save') }}",
+                    url: "{{ route('shotlink.store') }}",
                     type: 'POST',
-                    dataType: 'json',
                     data: {
                         linkold: inputData,
                         _token: $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (response) {
-                        Swal.fire({
-                            title: "Good job!",
-                            text: "create success!",
-                            icon: "success"
-                        });
-                        $('#inputData').val('');
+                        Swal.fire('Created!', response.message, 'success');
                         $('#dataTableBody').empty();
-                        fetchData()
+                        fetchData();
                     },
                     error: function (error) {
-                        console.error('Error:', error);
-                        $('#response').text('Failed to save data.').addClass('text-danger');
+                        Swal.fire('Error!', 'Failed to create shotlink.', 'error');
                     }
                 });
             });
@@ -127,25 +120,23 @@
                 $('#editModal').modal('show');
             });
             $('#saveChangesButton').on('click', function () {
-                const id = $('#editId').val();
+                const shotlinkId = $('#editId').val();
 
                 const inputmodal = $('#editInputData');
                 if (!inputmodal[0].checkValidity()) {
                     inputmodal[0].reportValidity();
                     return;
                 }
-                const input = $('#editInputData').val();
+                const updatedData = $('#editInputData').val();
 
                 $.ajax({
-                    url: "/shotlink/update/" + id,
-                    type: 'POST',
-                    dataType: 'json',
+                    url: "{{ url('shotlink') }}/" + shotlinkId,
+                    type: 'PUT',
                     data: {
-                        linkold: input,
+                        linkold: updatedData,
                         _token: $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (response) {
-
                         $('#editModal').modal('hide');
                         Swal.fire({
                             title: "Good job!",
@@ -156,14 +147,13 @@
                         fetchData()
                     },
                     error: function (error) {
-                        console.error('Error:', error);
-                        $('#response').text('Failed to save data.').addClass('text-danger');
+                        Swal.fire('Error!', 'Failed to update shotlink.', 'error');
                     }
                 });
             });
 
             $('#dataTableBody').on('click', '.btn-danger', function (e) {
-                const id = e.target.id;
+                const shotlinkId = e.target.id;
                 Swal.fire({
                     title: 'ลบข้อมูล ?',
                     text: "โปรดตรวจสอบไห้แน่ใจว่าจะลบข้อมูล !",
@@ -178,11 +168,10 @@
                     if (result.isConfirmed) {
                         $.ajax(
                             {
-                                url: "/shotlink/delete/" + id,
-                                type: 'post',
+                                url: "{{ url('shotlink') }}/" + shotlinkId,
+                                type: 'DELETE',
                                 data: {
-                                    "id": id,
-                                    "_token": "{{ csrf_token() }}"
+                                    _token: $('meta[name="csrf-token"]').attr('content')
                                 },
                                 success: function (response) {
                                     $('#dataTableBody').empty();

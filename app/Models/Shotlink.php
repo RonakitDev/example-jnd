@@ -13,6 +13,7 @@ class Shotlink extends Model
     protected $fillable = [
         'urlold',
         'urlnew',
+        'auth_id',
     ];
 
 }
