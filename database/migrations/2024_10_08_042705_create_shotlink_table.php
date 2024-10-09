@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('urlold');
             $table->string('urlnew');
-            $table->bigInteger('auth_id'); // Foreign key column
+            $table->bigInteger('auth_id');
             $table->timestamps();
         });
     }
